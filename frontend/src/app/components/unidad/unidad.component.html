@@ -1,0 +1,56 @@
+
+<!-- app.component.html -->
+ 
+<div *ngIf="cargo == 'chofer'; else componenteB">
+	<app-navchofer></app-navchofer>
+</div>
+<ng-template #componenteB>
+	<app-nav-usuario></app-nav-usuario>
+</ng-template>
+
+  <br>
+  <br>
+  <div class="container">
+      <div class="center">
+        <h1>Lista de unidades</h1>  
+      </div> 
+      <button mat-raised-button color="primary" (click)="abrirDialog()">+ Agregar</button>
+      <br>
+      <br>
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+        <ng-container matColumnDef="ID">
+          <th mat-header-cell *matHeaderCellDef> ID </th>
+          <td mat-cell *matCellDef="let unidad"> {{ unidad.id_unidad }} </td>
+        </ng-container>
+      
+        <ng-container matColumnDef="Nombre">
+          <th mat-header-cell *matHeaderCellDef> Nombre </th>
+          <td mat-cell *matCellDef="let unidad"> {{ unidad.nombre_unidad }} </td>
+        </ng-container>
+      
+        <ng-container matColumnDef="Descripcion">
+          <th mat-header-cell *matHeaderCellDef> Descripcion </th>
+          <td mat-cell *matCellDef="let unidad"> {{ unidad.descripcion_unidad }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Estado">
+          <th mat-header-cell *matHeaderCellDef> Estado </th>
+          <td mat-cell *matCellDef="let unidad"> {{ unidad.estado_unidad == '1' ? 'Activo' : 'Inactivo' }} </td>
+          <!-- <td mat-cell *matCellDef="let vehiculo"> {{ vehiculo.estado | estado }} </td> -->
+        </ng-container>
+  
+        <ng-container matColumnDef="acciones">
+          <th mat-header-cell *matHeaderCellDef> Acciones </th>
+          <td mat-cell *matCellDef="let element">
+            <!-- Agrega el botón aquí -->
+            <button mat-raised-button color="accent" (click)="editarUnidad(element)">Editar</button>
+            <span> | </span>
+            <button mat-raised-button color="warn" (click)="eliminarUnidad(element)">Eliminar</button>
+          </td>
+        </ng-container>
+      
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+  
+  </div>

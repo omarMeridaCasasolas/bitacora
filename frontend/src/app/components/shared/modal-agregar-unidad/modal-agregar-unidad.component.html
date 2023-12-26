@@ -1,0 +1,40 @@
+<form [formGroup]="myForm">
+    <h2 mat-dialog-title>Agregar unidad</h2>
+    <hr>
+    <div mat-dialog-content>
+        <mat-grid-list cols="2" rowHeight="80px">
+            <mat-grid-tile colspan="1">
+                <mat-form-field>
+                    <mat-label>Nombre</mat-label>
+                    <input matInput placeholder="Nombre" formControlName="nombre_unidad" value="" required>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile colspan="1">
+                <mat-form-field>
+                    <mat-label>Estado</mat-label>
+                    <select matNativeControl formControlName="estado_unidad" required>
+                        <option value="1" selected>Activo</option>
+                        <option value="0">Inactivo</option>
+                    </select>
+                </mat-form-field>
+            </mat-grid-tile>
+        </mat-grid-list>
+
+        <mat-grid-list cols="1" rowHeight="80px">
+            <mat-grid-tile colspan="1">
+                <mat-form-field>
+                    <mat-label>Descripcion</mat-label>
+                    <input matInput placeholder="Descripcion" formControlName="descripcion_unidad" value="" required>
+                </mat-form-field>
+            </mat-grid-tile>
+        </mat-grid-list>
+    </div>
+    <mat-dialog-actions>
+        <!-- Botones de acción del diálogo aquí -->
+        <!-- <button mat-raised-button color="warn" (click)="cerrarDialog()">Cerrar</button> -->
+        <mat-dialog-actions>
+            <button mat-raised-button color="primary" (click)="agregarUnidad()" [disabled]="myForm.invalid">Agregar</button>  
+            <button mat-raised-button color="warn" [mat-dialog-close]="true" >Cancelar</button>
+          </mat-dialog-actions>
+    </mat-dialog-actions>
+</form>

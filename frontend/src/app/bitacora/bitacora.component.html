@@ -1,0 +1,68 @@
+<!-- <app-nav-usuario></app-nav-usuario> -->
+
+<div *ngIf="cargo == 'chofer'; else componenteB">
+	<app-navchofer></app-navchofer>
+</div>
+<ng-template #componenteB>
+	<app-nav-usuario></app-nav-usuario>
+</ng-template>
+
+<div class="container">
+	<!-- <h2>Selecciona una fecha:</h2> -->
+	<mat-form-field>
+	  <input matInput [matDatepicker]="picker" [(ngModel)]="selectedDate" (ngModelChange)="onDateChanged($event)">
+	  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+	  <mat-datepicker #picker></mat-datepicker>
+	</mat-form-field>
+	<span class="spacer"></span>
+	<mat-form-field [style.display]="unidadVisible">
+		<mat-label>Lista unidades</mat-label>
+		<mat-select [(value)]="selectedDefault" (selectionChange)="onUnidadChanged($event)">
+		  <mat-option *ngFor="let option of opcionesUnidad" [value]="option.id_unidad">
+			{{ option.nombre_unidad }}
+		  </mat-option>
+		</mat-select>
+	</mat-form-field>
+	<span class="spacer"></span>
+	<mat-form-field>
+		<mat-label>Lista vehiculos</mat-label>
+		<mat-select [(value)]="selectedDefault" (selectionChange)="cambioVehiculo($event)">
+		  <mat-option *ngFor="let option of opcionesVehiculo" [value]="option.id_vehiculo">
+			{{ option.nombre }}
+		  </mat-option>
+		</mat-select>
+	</mat-form-field>
+</div>
+  
+<!-- <br> -->
+<table class="sticky-table">
+	<thead>
+	  <tr>
+		<th *ngFor="let header of cabezeraTable">{{ header.dia}} <br> {{ header.hora }}</th>
+	  </tr>
+	</thead>
+	<div *ngIf="cuerpoTable.length == 0; else componenteC">
+		<tbody style="width: 100%;display: table;">
+			<tr>
+				<td style="text-align: center; font-size: 2rem; padding: 2rem;">Fecha o vehiculo no validos, seleccione uno por favor</td>
+			</tr>
+		</tbody>
+	</div>
+	<ng-template #componenteC>
+		<tbody>
+			<tr *ngFor="let item of cuerpoTable; let i = index">
+				<td *ngFor="let header of cabezeraTable; let j = index">
+					<ng-container *ngIf="item[header.hora] == 'Disponible'">
+						<button mat-raised-button (click)="obtenerFilaColumna(i, j)" color="primary">{{ item[header.hora] }}</button>
+					</ng-container>
+					<ng-container *ngIf="item[header.hora] == 'Reservado'">
+						<button mat-raised-button (click)="editarReserva(i,j)" color="accent">{{ item[header.hora] }}</button>
+					</ng-container> 
+					<ng-container *ngIf="getMatchedFormat(item[header.hora])">
+						{{ item[header.hora] }}
+					</ng-container>
+				</td>
+			</tr>
+		</tbody>
+	</ng-template>
+</table>

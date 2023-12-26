@@ -1,0 +1,15 @@
+<form>
+  <h2 mat-dialog-title>Asignar Vehiculo</h2>
+  <hr>
+  <div *ngFor="let item of checkboxItems">
+    <mat-checkbox  color="warn" [value]="item.id_vehiculo" [checked]="item.checked" (change)="onCheckboxChange($event)">{{ item.nombre }}</mat-checkbox>
+  </div>
+  <mat-dialog-actions>
+    <!-- Botones de acción del diálogo aquí -->
+    <!-- <button mat-raised-button color="warn" (click)="cerrarDialog()">Cerrar</button> -->
+    <mat-dialog-actions>
+        <button mat-raised-button color="primary" (click)="asignarVehiculos()">Agregar</button>  
+        <button mat-raised-button color="warn" [mat-dialog-close]="true" >Cancelar</button>
+      </mat-dialog-actions>
+  </mat-dialog-actions>
+</form>

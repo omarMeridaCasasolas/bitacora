@@ -1,0 +1,19 @@
+mat-form-field {
+    padding: 2px;
+    width: 100%;
+  }
+
+  .row-container {
+    display: flex;
+    flex-direction: row;
+  }
+  
+  .column {
+    flex: 1;
+    padding: 10px;
+    background-color: lightgray;
+  }
+
+mat-dialog-actions {
+  justify-content: flex-end;
+}

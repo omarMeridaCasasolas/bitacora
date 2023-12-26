@@ -1,0 +1,72 @@
+/* .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; 
+  } */
+  
+  .center-container {
+    width: 300px; /* Opcional: ajusta el ancho según tus necesidades */
+  }
+  
+
+  .container {
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+  @media (min-width: 768px) {
+    .container {
+      width: 750px;
+    }
+  }
+  @media (min-width: 992px) {
+    .container {
+      width: 970px;
+    }
+  }
+  @media (min-width: 1200px) {
+    .container {
+      width: 1170px;
+    }
+  }
+
+  form{
+    margin-top: 0px !important;
+    padding-top: 0px !important;
+  }
+  
+  /* .mat-dialog-container {
+    padding: 0px !important;
+  } */
+  
+  mat-form-field {
+      padding: 2px !important;
+      width: 100%;
+    }
+  
+    .row-container {
+      display: flex;
+      flex-direction: row;
+    }
+    
+    .column {
+      flex: 1;
+      padding: 10px !important;
+      background-color: lightgray;
+    }
+  
+  mat-dialog-actions {
+    justify-content: flex-end;
+  }
+  
+  mat-dialog-title {
+    font-size: 12px !important;
+  }
+  
+  /* Optionally, reduce line height if needed */
+  mat-dialog-title h3 {
+    line-height: 12px !important;
+  }
+  

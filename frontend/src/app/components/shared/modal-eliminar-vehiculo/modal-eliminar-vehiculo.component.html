@@ -1,0 +1,12 @@
+<div mat-dialog-content>
+    <form [formGroup]="myForm">
+        <h2>Eliminar vehiculo</h2>
+        <hr>
+        <mat-checkbox required formControlName="check">¿Estás seguro de que deseas eliminar el vehiculo con placa <strong> {{data.placa_vehiculo}}</strong>?. Solo se prodra eliminar si no existe ningun registro reserva o chofer relacionado</mat-checkbox>
+        <div class="dialog-buttons">
+            <button mat-raised-button color="warn" (click)="confirmarEliminacion()" [disabled]="myForm.invalid">Eliminar</button>
+            <span>&nbsp;&nbsp;&nbsp;</span>
+            <button mat-raised-button color="primary" (click)="cerrarDialog()">Cancelar</button>
+        </div>
+    </form>
+  </div>

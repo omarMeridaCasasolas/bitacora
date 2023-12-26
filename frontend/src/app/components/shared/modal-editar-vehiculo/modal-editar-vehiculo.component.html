@@ -1,0 +1,68 @@
+<h2 mat-dialog-title>Editar vehiculo</h2>
+<hr>
+<form [formGroup]="myForm">
+    <div mat-dialog-content>
+        <mat-form-field>
+            <mat-label>Detalle</mat-label>
+            <input matInput placeholder="Detalle" formControlName="detalle_vehiculo" value="" required>
+        </mat-form-field>
+
+        <mat-grid-list cols="2" rowHeight="2:1">
+            <mat-grid-tile>
+                <mat-form-field>
+                    <mat-label>Placa</mat-label>
+                    <input matInput placeholder="Placa" formControlName="placa_vehiculo" value="" required>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <!-- <mat-form-field>
+                    <mat-label>Tipo</mat-label>
+                    <input matInput placeholder="Tipo" formControlName="tipo_vehiculo" value="" required>
+                </mat-form-field> -->
+                <mat-form-field>
+                    <mat-label>Tipo</mat-label>
+                    <select matNativeControl formControlName="tipo_vehiculo" required>
+                        <option value="Camioneta">Camioneta</option>
+                        <option value="Motocicleta">Motocicleta</option>
+                        <option value="Vagoneta">Vagoneta</option>
+                        <option value="Minibus">Minibus</option>
+                    </select>
+                </mat-form-field>
+            </mat-grid-tile>
+        </mat-grid-list>
+
+        <mat-grid-list cols="2" rowHeight="2:1">
+            <mat-grid-tile>
+                <mat-form-field>
+                    <mat-label>Estado</mat-label>
+                        <select matNativeControl formControlName="estado_vehiculo" required>
+                            <option value="1" selected>Activo</option>
+                            <option value="0">Inactivo</option>
+                        </select>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <mat-form-field>
+                    <mat-label>Kilometraje</mat-label>
+                    <input matInput  type="number" placeholder="Kilometraje" formControlName="km_vehiculo" required>
+                </mat-form-field>
+            </mat-grid-tile>
+        </mat-grid-list>
+        <mat-form-field>
+            <mat-label>Lista unidades</mat-label>
+            <mat-select [(value)]="selectedDefault" required formControlName="id_unidad" (selectionChange)="onSelectionChange($event)">
+              <mat-option *ngFor="let option of opcionesUnidad" [value]="option.id_unidad">
+                {{ option.nombre_unidad }}
+              </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <mat-dialog-actions>
+        <!-- Botones de acción del diálogo aquí -->
+        <!-- <button mat-raised-button color="warn" (click)="cerrarDialog()">Cerrar</button> -->
+        <mat-dialog-actions>
+            <button mat-raised-button color="primary" (click)="confirmarPedido()" [disabled]="myForm.invalid">Agregar</button>  
+            <button mat-raised-button color="warn" [mat-dialog-close]="true" >Cancelar</button>
+          </mat-dialog-actions>
+    </mat-dialog-actions>
+</form>

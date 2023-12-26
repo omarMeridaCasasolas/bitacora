@@ -1,0 +1,69 @@
+<form [formGroup]="myForm">
+    <h2 mat-dialog-title>Editar usuario</h2>
+    <hr>
+    <div mat-dialog-content>
+        <mat-grid-list cols="5" rowHeight="80px">
+            <mat-grid-tile colspan="3">
+                <mat-form-field>
+                    <mat-label>Nombre</mat-label>
+                    <input matInput placeholder="Nombre" formControlName="nombre_usuario" value="" required>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile colspan="2">
+                <mat-form-field>
+                    <mat-label>Carnet</mat-label>
+                    <input matInput placeholder="Carnet" formControlName="carnet_usuario" value="" required>
+                </mat-form-field>
+            </mat-grid-tile>
+        </mat-grid-list>
+
+        <mat-grid-list cols="2" rowHeight="80px">
+            <mat-grid-tile>
+                <mat-form-field>
+                    <mat-label>Celular</mat-label>
+                    <input matInput placeholder="Celular" formControlName="celular_usuario" value="0" required>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <mat-form-field>
+                    <mat-label>Estado</mat-label>
+                        <select matNativeControl formControlName="estado_usuario" required>
+                            <option value="1" selected>Activo</option>
+                            <option value="0">Inactivo</option>
+                        </select>
+                </mat-form-field>
+            </mat-grid-tile>
+        </mat-grid-list>
+
+        <mat-grid-list cols="12" rowHeight="80px">
+            <mat-grid-tile colspan="8">
+                <mat-form-field>
+                    <mat-label>Login</mat-label>
+                    <input matInput placeholder="Login" formControlName="login_usuario" value="" required>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile colspan="4">
+                <mat-form-field>
+                    <mat-label>Password</mat-label>
+                    <input matInput placeholder="Password" formControlName="pass_usuario" value="" required>
+                </mat-form-field>
+            </mat-grid-tile>
+        </mat-grid-list>
+        <mat-form-field>
+            <mat-label>Lista unidades</mat-label>
+            <mat-select [(value)]="selectedDefault" required formControlName="id_unidad" (selectionChange)="onSelectionChange($event)">
+              <mat-option *ngFor="let option of opcionesUnidad" [value]="option.id_unidad">
+                {{ option.nombre_unidad }}
+              </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <mat-dialog-actions>
+        <!-- Botones de acción del diálogo aquí -->
+        <!-- <button mat-raised-button color="warn" (click)="cerrarDialog()">Cerrar</button> -->
+        <mat-dialog-actions>
+            <button mat-raised-button color="primary" (click)="editarUsuario()" [disabled]="myForm.invalid">Actualizar</button>  
+            <button mat-raised-button color="warn" [mat-dialog-close]="true" >Cancelar</button>
+          </mat-dialog-actions>
+    </mat-dialog-actions>
+</form>

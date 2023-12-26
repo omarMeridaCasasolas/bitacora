@@ -1,0 +1,21 @@
+<div class="nav">
+    <input type="checkbox" id="nav-check">
+    <div class="nav-header">
+      <div class="nav-title">
+      {{username}}
+      </div>
+    </div>
+    <div class="nav-btn">
+      <label for="nav-check">
+      <span></span>
+      <span></span>
+      <span></span>
+      </label>
+    </div>
+    
+    <div class="nav-links" color="primary">
+        <button mat-button routerLink="/reserva">   <mat-icon>today</mat-icon> Reserva</button>
+        <button mat-button (click)="logout()"><mat-icon>exit_to_app</mat-icon> Salir </button>
+    </div>
+
+  </div>

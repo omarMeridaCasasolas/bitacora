@@ -1,0 +1,57 @@
+  <form [formGroup]="myForm">
+    <h2 mat-dialog-title>Editar Reserva</h2>
+    <div mat-dialog-content style="font-size: 12px"> 
+      <mat-slide-toggle (change)="onChangeSlide($event)">{{labelTipo}}!!</mat-slide-toggle>
+      <hr>
+      <mat-form-field>
+        <mat-label>Destino</mat-label>
+        <input matInput placeholder="Destino" value="" formControlName="destino" required>
+      </mat-form-field>
+      
+      <mat-grid-list cols="2" rowHeight="2:1">
+        <mat-grid-tile>
+          <mat-form-field>
+            <mat-label>Seleccione usuario</mat-label>
+            <mat-select  [(value)]="opcionSeleccionadaCliente" formControlName="usuario" required>
+              <mat-option *ngFor="let opcion of listaUsuarios" [value]="opcion.id_usuario">
+                {{ opcion.nombre_usuario }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <mat-form-field class="example-full-width">
+            <mat-label>Nro de vale</mat-label>
+            <input matInput placeholder="Nro de vale" [readonly]="isDisabled" formControlName="nroVale">
+          </mat-form-field>
+        </mat-grid-tile>
+      </mat-grid-list>
+
+      <mat-form-field>
+        <mat-label>Seleccione una horario</mat-label>
+        <mat-select  [(value)]="opcionSeleccionada" required formControlName="horario">
+          <mat-option *ngFor="let opcion of data" [value]="opcion.horario_final">
+            {{ opcion.horario_final }} -> {{opcion.tiempo}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      
+      <mat-grid-list cols="2" rowHeight="2:1">
+        <mat-grid-tile>
+          <mat-form-field class="example-full-width">
+            <mat-label>Km. Inicial</mat-label>
+            <input matInput type="number" placeholder="Km. Inicial" [readonly]="isDisabled" formControlName="kmInicial">
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field class="example-full-width">
+            <mat-label>Km. Final</mat-label>
+            <input matInput type="number" placeholder="Km. Final" [readonly]="isDisabled" formControlName="kmFinal">
+          </mat-form-field>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </div>
+    <mat-dialog-actions>
+      <button mat-raised-button color="primary" (click)="onClickActualizar()" [disabled]="myForm.invalid && banderaIsDelet">{{btnTipo}}</button>  
+      <button mat-raised-button color="warn" [mat-dialog-close]="true" >Cancelar</button>
+    </mat-dialog-actions>
+  </form>

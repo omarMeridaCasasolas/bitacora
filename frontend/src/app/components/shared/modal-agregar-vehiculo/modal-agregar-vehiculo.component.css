@@ -1,0 +1,41 @@
+mat-form-field {
+    padding: 2px;
+    width: 100%;
+  }
+
+  .row-container {
+    display: flex;
+    flex-direction: row;
+  }
+  
+  .column {
+    flex: 1;
+    padding: 10px;
+    background-color: lightgray;
+  }
+
+mat-dialog-actions {
+  justify-content: flex-end;
+}
+
+.mat-form-field {
+    font-size: 12px; /* Puedes ajustar el tamaño de fuente según tus necesidades */
+    margin-bottom: 0 !important; /* Establecer el margen inferior a 0 */
+    margin-top: 0 !important; 
+}
+  
+  /* Reducir la altura del propio input */
+  .mat-input-element {
+    height: 25px !important; /* Ajusta la altura según tus necesidades */
+  }
+  
+  /* Ajustar la altura de la línea bajo el input (barra de estado) */
+  .mat-form-field-underline {
+    height: 2px; /* Ajusta la altura según tus necesidades */
+  }
+  
+  /* Ajustar la altura del indicador de foco del input */
+  .mat-form-field.mat-focused .mat-form-field-ripple {
+    height: 1px; /* Ajusta la altura según tus necesidades */
+  }
+
