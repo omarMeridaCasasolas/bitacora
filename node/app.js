@@ -205,6 +205,26 @@ app.get('/api/vehiculosAsignadosChofer/:id', verificarToken, (req, res) => {
   }
 });
 
+app.get('/api/vehiculosDisponiblesPorChofer/:id', verificarToken, (req, res) => {
+  try {
+    let idChofer = req.params.id;
+    const query = 'SELECT id_vehiculo, CONCAT(detalle_vehiculo," - ",tipo_vehiculo) AS nombre FROM chofer_vehiculo INNER JOIN vehiculo USING(id_vehiculo) WHERE id_chofer = ? AND estado_vehiculo = 1';
+    connection.query(query, [idChofer], (error, results) => {
+      if (error) {
+        // throw error;
+        res.json({ error });
+        throw error;
+      }else{
+        console.log(results);
+        res.json(results);
+      }
+    });     
+  } catch (error) {
+    console.error('Se produjo un error:', error);
+    res.status(500).json({resultado:'Ocurrió un error en el servidor.'});
+  }
+});
+
 app.get('/api/vehiculosDisponibles', verificarToken, (req, res) => {
   try {
     const query = 'SELECT id_vehiculo, CONCAT(detalle_vehiculo," - ",tipo_vehiculo) AS nombre, false AS checked FROM vehiculo';
@@ -256,8 +276,8 @@ app.get('/api/unidadDisponibles',verificarToken,(req, res) => {
   });    
 });
 
-app.get('/api/unidad',(req, res) => {
-  connection.query('SELECT * FROM unidad', verificarToken, (error, results, fields) => {
+app.get('/api/unidad',verificarToken,(req, res) => {
+  connection.query('SELECT * FROM unidad', (error, results, fields) => {
     if (error) {
       res.json({ error });
       throw error;
@@ -415,7 +435,17 @@ app.get('/api/usuario', verificarToken,(req, res) => {
       res.json({ error });
       throw error;
     }else{
-      console.log(results);
+      res.json(results);
+    }
+  });    
+});
+
+app.get('/api/usuariosDisponibles', verificarToken,(req, res) => {
+  connection.query('SELECT id_usuario,id_unidad , nombre_usuario FROM usuario WHERE estado_usuario = 1', (error, results, fields) => {
+    if (error) {
+      res.json({ error });
+      throw error;
+    }else{
       res.json(results);
     }
   });    
@@ -504,16 +534,16 @@ app.get('/logout', (req, res) => {
 
 
 app.post('/api/reserva', (req, res)=> {
-  // console.log(req.body);
   try {
     const valor = req.body;
-    const query = 'INSERT INTO bitacora(id_vehiculo,id_chofer,id_usuario,fecha_bitacora,'+
-      'hora_inicio,hora_final,estado_bitacora,destino_bitacora,nro_vale,kilometraje_inicio,kilometraje_final) VALUES (?,?,?,?,?,?,?,?,?,?,?)';
-    connection.query(query, [1,1,valor.usuario,valor.fecha,valor.horarioInicio,valor.horario,'Reservado',valor.destino,valor.nroVale,valor.kmInicial,valor.kmFinal], (error, results) => {
+    const query = 'INSERT INTO bitacora(id_vehiculo,id_usuario,fecha_bitacora,'+
+      'hora_inicio,hora_final,estado_bitacora,destino_bitacora,nro_vale,kilometraje_inicio,kilometraje_final) VALUES (?,?,?,?,?,?,?,?,?,?)';
+    connection.query(query, [valor.id_vehiculo,valor.usuario,valor.fecha,valor.horarioInicio,valor.horario,'Reservado',valor.destino,valor.nroVale,valor.kmInicial,valor.kmFinal], (error, results) => {
       if (error) {
         throw error;
       }else{
-        // console.log(results);
+        
+        io.emit('agregarReserva', valor);
 		    res.json(results.affectedRows); // Envía los resultados como respueverificarTokensta  
       }
     });    
@@ -529,11 +559,11 @@ app.post('/api/bitacora', (req, res)=> {
     const valor = req.body;
     let fechaInicio;
     let fechaFinal;
+    console.log(valor);
     if(isEmpty(valor)){
       fechaInicio = new Date();
       fechaFinal = new Date();
       fechaFinal.setDate(fechaInicio.getDate() + 7);
-      // console.log('aqui');
     }else{
       fechaInicio = new Date(valor.fecha+"T00:00:00");
       fechaFinal = new Date();
@@ -572,6 +602,27 @@ app.delete('/api/bitacora/:id', (req, res) => {
       if (error) {
         throw error;
       }else{
+        io.emit('eliminarReserva', idBitacora);
+        res.json(results.affectedRows);
+      }
+    });     
+  } catch (error) {
+    // console.error('Se produjo un error:', error);
+    res.status(500).send('Ocurrió un error en el servidor.');
+  }
+});
+
+
+app.post('/api/deleteBitacora', (req, res) => {
+  try {
+    let valor = req.body;
+    const query = 'DELETE FROM bitacora WHERE id_bitacora = ?';
+    connection.query(query, [valor.id_bitacora], (error, results) => {
+      if (error) {
+        throw error;
+      }else{
+        console.log(valor);
+        io.emit('eliminarReserva', valor);
         res.json(results.affectedRows);
       }
     });     
@@ -591,6 +642,7 @@ app.put('/api/bitacora/:id', (req, res) => {
       if (error) {
         throw error;
       }else{
+        io.emit('editarReserva', valor);
         res.json(results.affectedRows);
       }
     });     
@@ -604,19 +656,17 @@ app.put('/api/bitacora/:id', (req, res) => {
 const port = 3000;
 
 httpServer.listen(port, () => console.log(`listening on port ${port}`));
+// httpServer.listen(port,'0.0.0.0', () => console.log(`listening on port ${port}`));
 
 function formatoMysql(fecha){
   let respuesta = 'YYYY-mm-dd';
-  console.log(fecha);
   respuesta = fecha.toISOString().substring(0, 10);
-  console.log(respuesta);
   return respuesta;
 }
 
 function agruparPorDia(semana,res){
   res.forEach(element => {
     let dia = new Date(element.fecha_bitacora).getDay();
-    // console.log(dia,element.fecha_bitacora);
     switch (dia) {
       case 0:
         semana.lunes.push(element);
@@ -648,7 +698,6 @@ function ordenarPordiasFecha(fecha){
   	let semana = {};
 	  let diasSemana = ['domingo','lunes','martes','miercoles','jueves','viernes','sabado'];
   	for (let i = 0; i < 7; i++) {
-		  // let aux = diasSemana[fecha.getDay()];
       semana[diasSemana[fecha.getDay()]] = [];
 		  fecha.setDate(fecha.getDate() + 1);
   	}
@@ -657,7 +706,7 @@ function ordenarPordiasFecha(fecha){
 
 function verificarToken(req, res, next) {
   const token = req.headers['authorization'];
-  console.log(req.headers['authorization']);
+  // console.log(req.headers['authorization']);
   if (!token) {
     return res.status(401).json({ mensaje: 'Token no proporcionado' });
   }
